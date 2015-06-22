@@ -44,14 +44,25 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0001;
-        public static final int buttonScanner=0x7f0a0000;
+        public static final int action_settings=0x7f09000b;
+        public static final int buttonScanner=0x7f090009;
+        public static final int decode=0x7f090000;
+        public static final int decode_failed=0x7f090001;
+        public static final int decode_succeeded=0x7f090002;
+        public static final int launch_product_query=0x7f090003;
+        public static final int preview_view=0x7f090007;
+        public static final int quit=0x7f090004;
+        public static final int restart_preview=0x7f090005;
+        public static final int return_scan_result=0x7f090006;
+        public static final int status_view=0x7f09000a;
+        public static final int viewfinder_view=0x7f090008;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
+        public static final int capture=0x7f030001;
     }
     public static final class menu {
-        public static final int main=0x7f090000;
+        public static final int main=0x7f0a0000;
     }
     public static final class raw {
         public static final int beep=0x7f040000;
@@ -59,7 +70,13 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f070002;
         public static final int app_name=0x7f070000;
+        public static final int button_cancel=0x7f070003;
+        public static final int button_ok=0x7f070004;
+        public static final int contents_text=0x7f070005;
         public static final int hello_world=0x7f070001;
+        public static final int msg_camera_framework_bug=0x7f070007;
+        public static final int msg_default_status=0x7f070008;
+        public static final int result_text=0x7f070006;
     }
     public static final class style {
         /** 

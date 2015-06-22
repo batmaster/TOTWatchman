@@ -1,5 +1,7 @@
 package com.tot.totwatchman;
 
+import com.google.zxing.client.android.CaptureActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +13,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+
+    private static final int REQUEST_QR_SCAN = 12888;
 	
 	private Button buttonScanner;
 
@@ -25,14 +29,19 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent();
+				Intent intent = new Intent(getApplicationContext(), CaptureActivity.class);
+				startActivityForResult(intent, REQUEST_QR_SCAN);
 			}
 		});
 	}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		
+		if (requestCode == REQUEST_QR_SCAN && resultCode == RESULT_OK) {
+			Toast.makeText(getApplicationContext(), intent.getStringExtra("CONTENT"), Toast.LENGTH_SHORT).show();
+		} else if(requestCode == REQUEST_QR_SCAN && resultCode == RESULT_CANCELED) {
+			
+		}
 		
 	};
 	
