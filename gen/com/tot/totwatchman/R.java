@@ -48,7 +48,6 @@ public final class R {
     public static final class id {
         public static final int action_settings=0x7f09001c;
         public static final int buttonCheckin=0x7f090013;
-        public static final int buttonHistory=0x7f090014;
         public static final int buttonScanner=0x7f090010;
         public static final int buttonSearch=0x7f09000d;
         public static final int buttonUpdate=0x7f090009;
@@ -63,6 +62,7 @@ public final class R {
         public static final int launch_product_query=0x7f090003;
         public static final int listView=0x7f09000e;
         public static final int logo=0x7f09001d;
+        public static final int pager=0x7f090014;
         public static final int preview_view=0x7f090015;
         public static final int quit=0x7f090004;
         public static final int restart_preview=0x7f090005;
@@ -81,43 +81,48 @@ public final class R {
         public static final int about_dialog=0x7f030000;
         public static final int activity_history=0x7f030001;
         public static final int activity_main=0x7f030002;
-        public static final int capture=0x7f030003;
-        public static final int listview_row=0x7f030004;
-        public static final int spinner_row=0x7f030005;
+        public static final int activity_main_fragment=0x7f030003;
+        public static final int capture=0x7f030004;
+        public static final int fragment_history=0x7f030005;
+        public static final int fragment_scan=0x7f030006;
+        public static final int listview_row=0x7f030007;
+        public static final int spinner_row=0x7f030008;
     }
     public static final class menu {
         public static final int history=0x7f0a0000;
         public static final int investigate=0x7f0a0001;
-        public static final int main_activity_actions=0x7f0a0002;
+        public static final int main=0x7f0a0002;
+        public static final int main_activity_actions=0x7f0a0003;
     }
     public static final class raw {
         public static final int beep=0x7f040000;
     }
     public static final class string {
         public static final int action_settings=0x7f070002;
-        public static final int action_sign_in=0x7f070008;
-        public static final int action_sign_in_short=0x7f070009;
+        public static final int action_sign_in=0x7f070009;
+        public static final int action_sign_in_short=0x7f07000a;
         public static final int app_name=0x7f070000;
-        public static final int button_cancel=0x7f070010;
-        public static final int button_ok=0x7f070011;
-        public static final int contents_text=0x7f070012;
-        public static final int error_field_required=0x7f07000f;
-        public static final int error_incorrect_password=0x7f07000e;
-        public static final int error_invalid_email=0x7f07000c;
-        public static final int error_invalid_password=0x7f07000d;
+        public static final int button_cancel=0x7f070011;
+        public static final int button_ok=0x7f070012;
+        public static final int contents_text=0x7f070013;
+        public static final int error_field_required=0x7f070010;
+        public static final int error_incorrect_password=0x7f07000f;
+        public static final int error_invalid_email=0x7f07000d;
+        public static final int error_invalid_password=0x7f07000e;
         public static final int hello_world=0x7f070001;
-        public static final int msg_camera_framework_bug=0x7f070014;
-        public static final int msg_default_status=0x7f070015;
-        public static final int plus_disconnect=0x7f07000b;
-        public static final int plus_sign_out=0x7f07000a;
+        public static final int msg_camera_framework_bug=0x7f070015;
+        public static final int msg_default_status=0x7f070016;
+        public static final int plus_disconnect=0x7f07000c;
+        public static final int plus_sign_out=0x7f07000b;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f070006;
-        public static final int prompt_password=0x7f070007;
-        public static final int result_text=0x7f070013;
+        public static final int prompt_email=0x7f070007;
+        public static final int prompt_password=0x7f070008;
+        public static final int result_text=0x7f070014;
         public static final int title_activity_history=0x7f070003;
         public static final int title_activity_investigate=0x7f070004;
-        public static final int title_activity_login=0x7f070005;
+        public static final int title_activity_login=0x7f070006;
+        public static final int title_activity_main_fragment=0x7f070005;
     }
     public static final class style {
         /** 
