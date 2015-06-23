@@ -117,8 +117,12 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getApplicationContext(),	HistoryActivity.class);
-				intent.putExtra("guardName", editTextName.getHint().toString());
-				intent.putExtra("guardId", editTextId.getText().toString());
+				if (!editTextName.getHint().equals("ชื่อ") && !editTextName.getHint().equals("ไม่พบชื่อ")){
+					intent.putExtra("guardName", editTextName.getHint().toString());
+				}
+				else {
+					
+				}
 				startActivity(intent);
 			}
 		});
@@ -203,16 +207,12 @@ public class MainActivity extends Activity {
 				if (name.equals("[]"))
 					name = "ไม่พบชื่อ";
 				editTextName.setHint(name);
-				if (!editTextName.getHint().equals("ชื่อ") && !editTextName.getHint().equals("ไม่พบชื่อ")) {
-					buttonHistory.setVisibility(View.VISIBLE);
-					if (!editTextLocation.getHint().equals("สถานที่") && !editTextLocation.getHint().equals("ไม่พบสถานที่"))
-						buttonCheckin.setVisibility(View.VISIBLE);
-					else
-						buttonCheckin.setVisibility(View.GONE);
-				}
-				else {
-					buttonHistory.setVisibility(View.GONE);
-				}
+
+				buttonHistory.setVisibility(View.VISIBLE);
+				if (!editTextLocation.getHint().equals("สถานที่") && !editTextLocation.getHint().equals("ไม่พบสถานที่") && !editTextName.getHint().equals("ชื่อ") && !editTextName.getHint().equals("ไม่พบชื่อ"))
+					buttonCheckin.setVisibility(View.VISIBLE);
+				else
+					buttonCheckin.setVisibility(View.GONE);
 			}
 			else {
 				

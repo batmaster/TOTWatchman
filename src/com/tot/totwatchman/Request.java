@@ -36,13 +36,14 @@ import android.util.Log;
 
 public class Request {
 	
+	public static final String REQ_GET_NAMES = "SELECT * FROM guard";
+	
 	private static final String REQ_GET_GUARD_NAME = "SELECT name FROM guard WHERE id_gard = %s";
 	private static final String REQ_GET_LOCATION_NAME = "SELECT name_lo FROM location WHERE qrcode = %s";
-	
 	private static final String REQ_GET_LAST_CHECK_TIME = "SELECT CONCAT(dates, ' ', times) as date FROM timcheck WHERE idguard = %s AND area = %s ORDER BY id_th DESC LIMIT 1";
 	private static final String REQ_CHECKIN = "INSERT INTO timcheck (idguard, area, dates, times) VALUES (%s, %s, '%s', '%s')";
-	
-	private static final String REQ_GET_CHECKIN_LIST = "SELECT t.*, l.name_lo as area_name FROM timcheck t, location l WHERE t.idguard = %s AND t.area = l.id_co ORDER BY t.id_th DESC LIMIT 50";
+	private static final String REQ_GET_CHECKIN_LIST = "SELECT t.*, l.name_lo as area_name FROM timcheck t, location l, guard g WHERE g.name = '%s' AND g.id_gard = t.idguard AND t.area = l.id_co ORDER BY t.id_th DESC LIMIT 50";
+	private static final String REQ_GET_CHECKIN_LIST_WITH_DATE = "SELECT t.*, l.name_lo as area_name FROM timcheck t, location l, guard g WHERE g.name = '%s' AND g.id_gard = t.idguard AND t.area = l.id_co AND (dates BETWEEN '%s' AND '%s') ORDER BY t.id_th DESC LIMIT 50";
 	
 	private Request() {
 		
@@ -98,8 +99,15 @@ public class Request {
 		return true;
 	}
 	
-	public static String getList(String guardId) throws HttpHostConnectException, ConnectTimeoutException, SocketTimeoutException {
-		return request(String.format(REQ_GET_CHECKIN_LIST, guardId));
+	public static String getList(String guardName, String fromDate, String toDate) throws HttpHostConnectException, ConnectTimeoutException, SocketTimeoutException {
+		if (!fromDate.equals("") && !toDate.equals(""))
+			return request(String.format(REQ_GET_CHECKIN_LIST_WITH_DATE, guardName, fromDate.replace('/', '-'), toDate.replace('/', '-')));
+		else
+			return request(String.format(REQ_GET_CHECKIN_LIST, guardName));
+	}
+	
+	public static String getNames() throws HttpHostConnectException, ConnectTimeoutException, SocketTimeoutException {
+		return request(REQ_GET_NAMES);
 	}
 	
 	public static String request(String str) throws org.apache.http.conn.ConnectTimeoutException, java.net.SocketTimeoutException, org.apache.http.conn.HttpHostConnectException {

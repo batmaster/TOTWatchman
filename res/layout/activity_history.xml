@@ -9,13 +9,81 @@
     tools:context="com.tot.totwatchman.HistoryActivity"
     android:orientation="vertical"
     android:background="#1B75B3" >
-
-    <TextView
-        android:id="@+id/textViewName"
-        style="?android:textAppearanceLargeInverse"
-        android:layout_width="wrap_content"
+    
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name" />
+        android:background="#E3E3E3"
+        android:paddingLeft="24px"
+        android:paddingRight="24px"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="8" >
+            
+	        <TextView
+	            android:layout_width="0px"
+	            android:layout_height="match_parent"
+	            android:gravity="center"
+	            android:layout_weight="1"
+	            android:text="ชื่อ" />
+	
+	        <Spinner
+	            android:id="@+id/spinnerNames"
+	            android:layout_width="0px"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="7" />
+	    </LinearLayout>
+        
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:weightSum="8"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="วันที่" />
+
+            <EditText
+	            android:id="@+id/editTextFromDate"
+	            android:layout_width="0px"
+	            android:layout_height="wrap_content"
+	            style="@android:style/Widget.Holo.Light.Spinner"
+	            android:focusable="false"
+	            android:layout_weight="3" />
+	        
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="ถึง" />
+            
+	        <EditText
+	            android:id="@+id/editTextToDate"
+	            android:layout_width="0px"
+	            android:layout_height="wrap_content"
+	            style="@android:style/Widget.Holo.Light.Spinner"
+	            android:focusable="false"
+	            android:layout_weight="3" />
+        </LinearLayout>
+        
+        <Button
+	        android:id="@+id/buttonSearch"
+	        style="?android:textAppearanceSmall"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="ค้นหา"
+	        android:textStyle="bold" />
+        
+    </LinearLayout>
     
     <ScrollView
         android:layout_width="match_parent"
