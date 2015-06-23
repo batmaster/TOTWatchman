@@ -11,8 +11,31 @@
     android:background="#1B75B3" >
 
     <TextView
+        android:id="@+id/textViewName"
+        style="?android:textAppearanceLargeInverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:text="Name" />
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+    	android:background="#FFFFFF" 
+    	android:layout_marginTop="32px"
+        android:padding="4px" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+            
+	        <ListView
+	            android:id="@+id/listView"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent" >
+	        </ListView>
+	    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

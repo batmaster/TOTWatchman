@@ -36,16 +36,13 @@ import android.util.Log;
 
 public class Request {
 	
-	public static final String REQ_GET_PROVINCES = "SELECT s.province AS province, SUM(CASE WHEN smsdown = 'yes' AND smsup = '' THEN 1 ELSE 0 END) AS amount FROM sector s, nodeumbo n WHERE n.node_sector = s.umbo GROUP BY s.province ORDER BY s.province";
-	public static final String REQ_DEFAULT = "";
-	private static final String REQ_GET_DOWNLIST = "SELECT n.*, s.province FROM nodeumbo n, sector s WHERE n.node_sector = s.umbo AND s.province IN (%s) AND smsdown = 'yes' AND smsup = '' AND n.id_nu > %d ORDER BY n.id_nu DESC";
-	private static final String REQ_GET_UPLIST = "SELECT n.*, s.province FROM nodeumbo n, sector s WHERE n.node_sector = s.umbo AND n.id_nu IN (%s) AND smsdown = 'yes' AND smsup = 'yes' ORDER BY n.id_nu DESC";
-	
 	private static final String REQ_GET_GUARD_NAME = "SELECT name FROM guard WHERE id_gard = %s";
 	private static final String REQ_GET_LOCATION_NAME = "SELECT name_lo FROM location WHERE qrcode = %s";
 	
 	private static final String REQ_GET_LAST_CHECK_TIME = "SELECT CONCAT(dates, ' ', times) as date FROM timcheck WHERE idguard = %s AND area = %s ORDER BY id_th DESC LIMIT 1";
 	private static final String REQ_CHECKIN = "INSERT INTO timcheck (idguard, area, dates, times) VALUES (%s, %s, '%s', '%s')";
+	
+	private static final String REQ_GET_CHECKIN_LIST = "SELECT t.*, l.name_lo as area_name FROM timcheck t, location l WHERE t.idguard = %s AND t.area = l.id_co ORDER BY t.id_th DESC LIMIT 50";
 	
 	private Request() {
 		
@@ -77,7 +74,7 @@ public class Request {
 	
 	public static boolean checkin(String guardId, String qrCode) throws HttpHostConnectException, ConnectTimeoutException, SocketTimeoutException {
 		String lastDateString = Parser.parse(getLastCheck(guardId, qrCode));
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat format = new SimpleDateFormat("[yyyy-MM-dd hh:mm:ss]");
 		
 		try {
 			if (!lastDateString.equals("[]")) {
@@ -99,6 +96,10 @@ public class Request {
 		}
 		
 		return true;
+	}
+	
+	public static String getList(String guardId) throws HttpHostConnectException, ConnectTimeoutException, SocketTimeoutException {
+		return request(String.format(REQ_GET_CHECKIN_LIST, guardId));
 	}
 	
 	public static String request(String str) throws org.apache.http.conn.ConnectTimeoutException, java.net.SocketTimeoutException, org.apache.http.conn.HttpHostConnectException {

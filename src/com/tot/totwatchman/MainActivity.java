@@ -54,6 +54,7 @@ public class MainActivity extends Activity {
     private EditText editTextLocation;
 	private Button buttonScanner;
 	private Button buttonCheckin;
+	private Button buttonHistory;
 	
 	private String code;
 
@@ -107,6 +108,18 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				CheckInTask task = new CheckInTask();
 				task.execute();
+			}
+		});
+		
+		buttonHistory = (Button) findViewById(R.id.buttonHistory);
+		buttonHistory.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(),	HistoryActivity.class);
+				intent.putExtra("guardName", editTextName.getHint().toString());
+				intent.putExtra("guardId", editTextId.getText().toString());
+				startActivity(intent);
 			}
 		});
 		
@@ -190,11 +203,16 @@ public class MainActivity extends Activity {
 				if (name.equals("[]"))
 					name = "ไม่พบชื่อ";
 				editTextName.setHint(name);
-				
-				if (!editTextLocation.getHint().equals("สถานที่") && !editTextLocation.getHint().equals("ไม่พบสถานที่") && !editTextName.getHint().equals("ชื่อ") && !editTextName.getHint().equals("ไม่พบชื่อ"))
-					buttonCheckin.setVisibility(View.VISIBLE);
-				else
-					buttonCheckin.setVisibility(View.GONE);
+				if (!editTextName.getHint().equals("ชื่อ") && !editTextName.getHint().equals("ไม่พบชื่อ")) {
+					buttonHistory.setVisibility(View.VISIBLE);
+					if (!editTextLocation.getHint().equals("สถานที่") && !editTextLocation.getHint().equals("ไม่พบสถานที่"))
+						buttonCheckin.setVisibility(View.VISIBLE);
+					else
+						buttonCheckin.setVisibility(View.GONE);
+				}
+				else {
+					buttonHistory.setVisibility(View.GONE);
+				}
 			}
 			else {
 				
@@ -544,7 +562,7 @@ public class MainActivity extends Activity {
 	            	textViewNewVersionName.setText("มีปัญหาการเชื่อมต่อ");
 	            }
 	            else {
-	            	textViewCurrentVersionName.setText("ไม่สามารถเช็คอิซ้ำได้ภายในเวลา 1 ชั่วโมง");
+	            	textViewCurrentVersionName.setText("ไม่สามารถเช็คอินซ้ำสถานที่นี้ได้ภายในเวลา 1 ชั่วโมง");
 	            	AsyncTask<String, Integer, String> task = new AsyncTask<String, Integer, String>() {
 	            		
 	            		private String lastDateString;
