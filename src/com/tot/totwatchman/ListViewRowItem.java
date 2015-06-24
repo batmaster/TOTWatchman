@@ -10,20 +10,23 @@ public class ListViewRowItem {
 	private String area;
 	private String dates;
 	private String times;
-
 	private String area_name;
+	private String la;
+	private String lo;
 
 	public ListViewRowItem() {
-		this("", "", "", "", "", "ไม่มีรายการ");
+		this("", "", "", "", "", "ไม่มีรายการ", "", "");
 	}
 	
-	public ListViewRowItem(String id_th, String idguard, String area, String dates, String times, String area_name) {
+	public ListViewRowItem(String id_th, String idguard, String area, String dates, String times, String area_name, String la, String lo) {
 		this.id_th = id_th;
 		this.idguard = idguard;
 		this.area = area;
 		this.dates = dates;
 		this.times = times;
 		this.area_name = area_name;
+		this.la = la;
+		this.lo = lo;
 	}
 
 	public String getId_th() {
@@ -72,5 +75,21 @@ public class ListViewRowItem {
 
 	public void setArea_name(String area_name) {
 		this.area_name = area_name;
+	}
+
+	public String getLa() {
+		return la;
+	}
+
+	public void setLa(String la) {
+		this.la = la;
+	}
+
+	public String getLo() {
+		return lo;
+	}
+
+	public void setLo(String lo) {
+		this.lo = lo;
 	}
 }

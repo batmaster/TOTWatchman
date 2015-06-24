@@ -238,7 +238,7 @@ public class HistoryFragment extends Fragment {
 				JSONArray js = new JSONArray(parsed);
 				for (int i = 0; i < js.length(); i++) {
 					JSONObject jo = js.getJSONObject(i);
-					ListViewRowItem item = new ListViewRowItem(jo.getString("id_th"), jo.getString("idguard"), jo.getString("area"), jo.getString("dates"), jo.getString("times"), jo.getString("area_name"));
+					ListViewRowItem item = new ListViewRowItem(jo.getString("id_th"), jo.getString("idguard"), jo.getString("area"), jo.getString("dates"), jo.getString("times"), jo.getString("area_name"), jo.getString("la"), jo.getString("lo"));
 					list.add(item);
 				}
 				

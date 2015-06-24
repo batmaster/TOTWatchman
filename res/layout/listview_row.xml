@@ -26,7 +26,13 @@
             android:textColor="#323232"
             android:textStyle="bold"
             android:text="Date" />
-
+        
+        <TextView
+            android:id="@+id/textViewLaLo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="La , Lo"
+            android:textColor="#323232" />
 
         <TextView
             android:id="@+id/textViewElapse"

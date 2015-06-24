@@ -48,6 +48,10 @@ public class ListViewRowAdapter extends ArrayAdapter<ListViewRowItem> {
 			elapse.setVisibility(View.GONE);
 		}
 		
+		TextView lalo = (TextView) row.findViewById(R.id.textViewLaLo);
+		String laloString = list.get(position).getLa() + " , " + list.get(position).getLo();
+		lalo.setText(laloString);
+		
 		return row;
 	}
 	

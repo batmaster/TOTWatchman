@@ -52,7 +52,6 @@
             android:id="@+id/editTextName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:enabled="false"
             android:hint="ชื่อ"
             android:maxLines="1"
@@ -62,9 +61,17 @@
             android:id="@+id/editTextLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:enabled="false"
             android:hint="สถานที่"
+            android:maxLines="1"
+            android:singleLine="true" />
+        
+        <EditText
+            android:id="@+id/editTextGPS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="GPS"
             android:maxLines="1"
             android:singleLine="true" />
 

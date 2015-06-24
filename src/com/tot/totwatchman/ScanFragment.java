@@ -21,13 +21,17 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,17 +53,22 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
 
 public class ScanFragment extends Fragment {
-	
 
     private static final int REQUEST_QR_SCAN = 12888;
+    private static final int REQUEST_LOCATION_SETTING_FORCE_CLOSE = 12889;
+    private static final int REQUEST_MOCK_SETTING_FORCE_CLOSE = 12890;
+    private static final int REQUEST_LOCATION_SETTING = 12891;
+    private static final int REQUEST_MOCK_SETTING = 12892;
 	
     private EditText editTextId;
     private EditText editTextName;
     private EditText editTextLocation;
+    private EditText editTextGPS;
 	private Button buttonScanner;
 	private Button buttonCheckin;
 	
 	private String code;
+	private GPSTracker gpsTracker;
 	
 	private SwipeRefreshLayout swipeRefreshLayout;
 	
@@ -100,6 +109,8 @@ public class ScanFragment extends Fragment {
 		editTextName = (EditText) view.findViewById(R.id.editTextName);
 		editTextLocation = (EditText) view.findViewById(R.id.editTextLocation);
 		
+		editTextGPS = (EditText) view.findViewById(R.id.editTextGPS);
+		
 		buttonScanner = (Button) view.findViewById(R.id.buttonScanner);
 		buttonScanner.setOnClickListener(new OnClickListener() {
 			
@@ -115,12 +126,85 @@ public class ScanFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				CheckInTask task = new CheckInTask();
-				task.execute();
+				gpsTracker = new GPSTracker(getActivity().getApplicationContext());
+				checkGPS(false);
 			}
 		});
 		
+		gpsTracker = new GPSTracker(getActivity().getApplicationContext());
+		checkGPS(true);
+		
 		return view;
+	}
+	
+	private double la;
+	private double lo;
+	
+	private void checkGPS(final boolean forceClose) {
+		if (!gpsTracker.canGetLocation()) {
+			AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+			dialog.setTitle("ระบบหาตำแหน่งถูกปิด");
+			dialog.setMessage("เปิดการใช้งาน \"ตำแหน่ง\" หรือ \"Location\" เพื่อทำการเช็คอิน");
+			dialog.setPositiveButton("ตั้งค่า", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+					getActivity().startActivityForResult(intent, forceClose ? REQUEST_LOCATION_SETTING_FORCE_CLOSE : REQUEST_LOCATION_SETTING);
+					dialog.dismiss();
+				}
+			});
+			dialog.setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if (forceClose)
+						getActivity().finish();
+				}
+			});
+			dialog.setIcon(android.R.drawable.ic_menu_manage);
+			dialog.show();
+		}
+		else {
+			checkMock(forceClose);
+		}
+	}
+	
+	private void checkMock(final boolean forceClose) {
+		if (isMockSettingsON()) {
+			AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+			dialog.setTitle("ตรวจพบการเปิดระบบตำแหน่งจำลอง");
+			dialog.setMessage("ปิด \"อนุญาตตำแหน่งจำลอง\" หรือ \"Allow mock locations\" เพื่อทำการเช็คอิน");
+			dialog.setPositiveButton("ตั้งค่า", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) { 
+		        	Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS);
+					getActivity().startActivityForResult(intent, forceClose ? REQUEST_MOCK_SETTING_FORCE_CLOSE : REQUEST_MOCK_SETTING);
+					dialog.dismiss();
+		        }
+		     });
+			dialog.setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) {
+		        	if (forceClose)
+		        		getActivity().finish();
+		        }
+			});
+			dialog.setIcon(android.R.drawable.ic_menu_manage);
+			dialog.show();
+		}
+		else {
+			la = gpsTracker.getLatitude();
+			lo = gpsTracker.getLongitude();
+			if (forceClose)
+				editTextGPS.setText(la + " , " + lo);
+			else {
+				CheckInTask task = new CheckInTask();
+				task.execute();
+			}
+		}
+	}
+	
+	private boolean isMockSettingsON() {
+		return !Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ALLOW_MOCK_LOCATION).equals("0");
 	}
 	
 	@Override
@@ -133,7 +217,20 @@ public class ScanFragment extends Fragment {
 		} else if (requestCode == REQUEST_QR_SCAN && resultCode == Activity.RESULT_CANCELED) {
 			
 		}
-		
+		else if (requestCode == REQUEST_LOCATION_SETTING_FORCE_CLOSE) {
+			gpsTracker = new GPSTracker(getActivity().getApplicationContext());
+			checkGPS(true);
+		}
+		else if (requestCode == REQUEST_MOCK_SETTING_FORCE_CLOSE) {
+			checkMock(true);
+		}
+		else if (requestCode == REQUEST_LOCATION_SETTING) {
+			gpsTracker = new GPSTracker(getActivity().getApplicationContext());
+			checkGPS(true);
+		}
+		else if (requestCode == REQUEST_MOCK_SETTING) {
+			checkMock(true);
+		}
 	};
 	
 	private class CheckIdTask extends AsyncTask<String, Integer, String> {
@@ -293,7 +390,7 @@ public class ScanFragment extends Fragment {
 		@Override
 		protected String doInBackground(String[] params) {
 			try {
-				checked = Request.checkin(editTextId.getText().toString(), code);
+				checked = Request.checkin(editTextId.getText().toString(), code, la, lo);
 			} catch (ConnectTimeoutException e) {
 				loading.setMessage("เชื่อมต่อเซิร์ฟนานเกินไป");
 				error = true;
