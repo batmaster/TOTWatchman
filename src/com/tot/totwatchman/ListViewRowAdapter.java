@@ -52,6 +52,9 @@ public class ListViewRowAdapter extends ArrayAdapter<ListViewRowItem> {
 		String laloString = list.get(position).getLa() + " , " + list.get(position).getLo();
 		lalo.setText(laloString);
 		
+		if (list.get(position).getArea_name().equals("ไม่มีรายการ"))
+			lalo.setVisibility(View.GONE);
+		
 		return row;
 	}
 	

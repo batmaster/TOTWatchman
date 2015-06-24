@@ -39,11 +39,11 @@ public class Request {
 	public static final String REQ_GET_NAMES = "SELECT * FROM guard";
 	
 	private static final String REQ_GET_GUARD_NAME = "SELECT name FROM guard WHERE id_gard = %s";
-	private static final String REQ_GET_LOCATION_NAME = "SELECT name_lo FROM location WHERE qrcode = %s";
-	private static final String REQ_GET_LAST_CHECK_TIME = "SELECT CONCAT(dates, ' ', times) as date FROM timcheck WHERE idguard = %s AND area = %s ORDER BY id_th DESC LIMIT 1";
-	private static final String REQ_CHECKIN = "INSERT INTO timcheck (idguard, area, dates, times, la, lo) VALUES (%s, %s, '%s', '%s', %s, %s)";
+	private static final String REQ_GET_LOCATION_NAME = "SELECT name_lo FROM location WHERE qrcode = '%s'";
+	private static final String REQ_GET_LAST_CHECK_TIME = "SELECT CONCAT(dates, ' ', times) as date FROM timcheck WHERE idguard = %s AND area = '%s' ORDER BY id_th DESC LIMIT 1";
+	private static final String REQ_CHECKIN = "INSERT INTO timcheck (idguard, area, dates, times, latijude, longtijude) VALUES (%s, '%s', '%s', '%s', '%s', '%s')";
 	private static final String REQ_GET_CHECKIN_LIST = "SELECT t.*, l.name_lo as area_name FROM timcheck t, location l, guard g WHERE g.name = '%s' AND g.id_gard = t.idguard AND t.area = l.id_co ORDER BY t.id_th DESC LIMIT 50";
-	private static final String REQ_GET_CHECKIN_LIST_WITH_DATE = "SELECT t.*, l.name_lo as area_name FROM timcheck t, location l, guard g WHERE g.name = '%s' AND g.id_gard = t.idguard AND t.area = l.id_co AND (dates BETWEEN '%s' AND '%s') ORDER BY t.id_th DESC LIMIT 50";
+	private static final String REQ_GET_CHECKIN_LIST_WITH_DATE = "SELECT t.*, l.name_lo as area_name FROM timcheck t, location l, guard g WHERE g.name = '%s' AND g.id_gard = t.idguard AND t.area = l.qrcode AND (dates BETWEEN '%s' AND '%s') ORDER BY t.id_th DESC LIMIT 50";
 	
 	private Request() {
 		

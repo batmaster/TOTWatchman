@@ -66,6 +66,7 @@ public class HistoryFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_history, container, false);
 		
+		// not refresh when add new guard, have to restart app
 		spinnerNames = (Spinner) view.findViewById(R.id.spinnerNames);
 		GetNamesTask task = new GetNamesTask();
 		task.execute();
@@ -253,7 +254,7 @@ public class HistoryFragment extends Fragment {
 				JSONArray js = new JSONArray(parsed);
 				for (int i = 0; i < js.length(); i++) {
 					JSONObject jo = js.getJSONObject(i);
-					ListViewRowItem item = new ListViewRowItem(jo.getString("id_th"), jo.getString("idguard"), jo.getString("area"), jo.getString("dates"), jo.getString("times"), jo.getString("area_name"), jo.getString("la"), jo.getString("lo"));
+					ListViewRowItem item = new ListViewRowItem(jo.getString("id_th"), jo.getString("idguard"), jo.getString("area"), jo.getString("dates"), jo.getString("times"), jo.getString("area_name"), jo.getString("latijude"), jo.getString("longtijude"));
 					list.add(item);
 				}
 				

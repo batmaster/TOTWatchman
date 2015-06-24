@@ -25,12 +25,12 @@ import android.util.Log;
 
 public class SharedValues {
 	
-	public static final String HOST_DB = "http://128.199.145.53/watchman/getRecord.php";
-	public static final String HOST_VERSION = "http://128.199.145.53/watchman/getVersion.php";
+	public static final String HOST_DB = "http://203.114.104.242/watchman/getRecord.php";
+	public static final String HOST_VERSION = "http://203.114.104.242/watchman/getVersion.php";
 	
 	public final static String FILE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/totapk/";
 	public final static String FILE_NAME = "TOTWatchman.apk";
-	public static final String HOST_APK = "http://128.199.145.53/watchman/TOTWatchman.apk";
+	public static final String HOST_APK = "http://203.114.104.242/watchman/TOTWatchman.apk";
 	
 	
 	private SharedValues () {
