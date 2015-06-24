@@ -184,8 +184,6 @@ public class HistoryFragment extends Fragment {
 			}
 		});
 		
-		listView = (ListView) view.findViewById(R.id.listView);
-		
 		swipeRefreshLayout = new SwipeRefreshLayout(getActivity().getApplicationContext());
 		swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
 			
@@ -199,6 +197,23 @@ public class HistoryFragment extends Fragment {
 			}
 		});
 		swipeRefreshLayout.addView(view);
+		
+
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				int topRowVerticalPosition = (listView == null || listView.getChildCount() == 0) ? 0 : listView.getChildAt(0).getTop();
+				swipeRefreshLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
+			}
+		});
 		
 		return swipeRefreshLayout;
 	}
