@@ -177,15 +177,15 @@ public class MainFragmentActivity extends FragmentActivity {
             dialog.setCancelable(true);
             
             if (!version.equals("")) {
-	            String currentVersionName = "";
+	            double currentVersionName = 0;
 				try {
-					currentVersionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+					currentVersionName = Double.parseDouble(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
 				} catch (NameNotFoundException e) {
 					e.printStackTrace();
 				}
-	            String versionName = version.split(",")[0];
+	            double versionName = Double.parseDouble(version.split(",")[0]);
 	            
-	            if (currentVersionName.equals(versionName)) {
+	            if (currentVersionName == versionName) {
 	            	TextView textViewCurrentVersionName = (TextView) dialog.findViewById(R.id.textViewCurrentVersionName);
 	            	textViewCurrentVersionName.setText("เวอร์ชันปัจจุบัน " + currentVersionName);
 	            	
@@ -211,6 +211,9 @@ public class MainFragmentActivity extends FragmentActivity {
 							task.execute();
 						}
 					});
+	                
+	                if (currentVersionName > versionName)
+	                	buttonUpdate.setVisibility(View.GONE);
 	            }
             }
             else {

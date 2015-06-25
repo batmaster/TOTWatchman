@@ -7,5 +7,6 @@
     <string name="title_activity_history">HistoryActivity</string>
     <string name="title_activity_investigate">InvestigateActivity</string>
     <string name="title_activity_main_fragment">MainFragmentActivity</string>
+    <string name="title_activity_map">MapActivity</string>
 
 </resources>

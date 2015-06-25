@@ -21,6 +21,7 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,7 @@ import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -179,9 +181,13 @@ public class HistoryFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				String name = ((TextView) spinnerNames.getSelectedView().findViewById(R.id.textViewName)).getText().toString();
-				GetListTask task = new GetListTask(name, editTextFromDate.getText().toString(), editTextToDate.getText().toString());
-				task.execute();
+				try {
+					String name = ((TextView) spinnerNames.getSelectedView().findViewById(R.id.textViewName)).getText().toString();
+					GetListTask task = new GetListTask(name, editTextFromDate.getText().toString(), editTextToDate.getText().toString());
+					task.execute();
+				} catch (NullPointerException e) {
+					Toast.makeText(getActivity().getApplicationContext(), "การเชื่อมต่อขัดข้อง กรุณาปิดและเปิดใหม่", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 		
@@ -190,9 +196,13 @@ public class HistoryFragment extends Fragment {
 			
 			@Override
 			public void onRefresh() {
-				String name = ((TextView) spinnerNames.getSelectedView().findViewById(R.id.textViewName)).getText().toString();
-				GetListTask task = new GetListTask(name, editTextFromDate.getText().toString(), editTextToDate.getText().toString());
-				task.execute();
+				try {
+					String name = ((TextView) spinnerNames.getSelectedView().findViewById(R.id.textViewName)).getText().toString();
+					GetListTask task = new GetListTask(name, editTextFromDate.getText().toString(), editTextToDate.getText().toString());
+					task.execute();
+				} catch (NullPointerException e) {
+					Toast.makeText(getActivity().getApplicationContext(), "การเชื่อมต่อขัดข้อง กรุณาปิดและเปิดใหม่", Toast.LENGTH_SHORT).show();
+				}
 				
 				swipeRefreshLayout.setRefreshing(false);
 			}
@@ -213,6 +223,26 @@ public class HistoryFragment extends Fragment {
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				int topRowVerticalPosition = (listView == null || listView.getChildCount() == 0) ? 0 : listView.getChildAt(0).getTop();
 				swipeRefreshLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
+			}
+		});
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				String laloString = ((TextView) view.findViewById(R.id.textViewLaLo)).getText().toString();
+				if (laloString.equals(" , "))
+					return;
+				
+				String lalo[] = laloString.replace(" ", "").split(",");
+				if (lalo[0].equals("0") && lalo[1].equals("0")) {
+					
+				}
+				else {
+					Intent intent = new Intent(getActivity().getApplicationContext(), MapActivity.class);
+					intent.putExtra("la", Double.parseDouble(lalo[0]));
+					intent.putExtra("lo", Double.parseDouble(lalo[1]));
+					startActivity(intent);
+				}
 			}
 		});
 		
