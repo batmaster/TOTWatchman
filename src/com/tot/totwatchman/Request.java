@@ -49,15 +49,15 @@ public class Request {
 		
 	}
 	
-	public static String getName(String guardId) throws HttpHostConnectException, ConnectTimeoutException, SocketTimeoutException {
+	public static String getName(String guardId) throws IOException {
 		return request(String.format(REQ_GET_GUARD_NAME, guardId));
 	}
 	
-	public static String getLocation(String qrCode) throws HttpHostConnectException, ConnectTimeoutException, SocketTimeoutException {
+	public static String getLocation(String qrCode) throws IOException {
 		return request(String.format(REQ_GET_LOCATION_NAME, qrCode));
 	}
 	
-	public static String getLastCheck(String guardId, String qrCode) throws HttpHostConnectException, ConnectTimeoutException, SocketTimeoutException {
+	public static String getLastCheck(String guardId, String qrCode) throws IOException {
 		String last = Parser.parse(request(String.format(REQ_GET_LAST_CHECK_TIME, guardId, qrCode)));
 		
 		if (!last.equals("[]")) {
@@ -73,7 +73,7 @@ public class Request {
 		return "";
 	}
 	
-	public static boolean checkin(String guardId, String qrCode, double la, double lo) throws HttpHostConnectException, ConnectTimeoutException, SocketTimeoutException {
+	public static boolean checkin(String guardId, String qrCode, double la, double lo) throws IOException {
 		String lastDateString = Parser.parse(getLastCheck(guardId, qrCode));
 		SimpleDateFormat format = new SimpleDateFormat("[yyyy-MM-dd hh:mm:ss]");
 		
@@ -99,18 +99,18 @@ public class Request {
 		return true;
 	}
 	
-	public static String getList(String guardName, String fromDate, String toDate) throws HttpHostConnectException, ConnectTimeoutException, SocketTimeoutException {
+	public static String getList(String guardName, String fromDate, String toDate) throws IOException {
 		if (!fromDate.equals("") && !toDate.equals(""))
 			return request(String.format(REQ_GET_CHECKIN_LIST_WITH_DATE, guardName, fromDate.replace('/', '-'), toDate.replace('/', '-')));
 		else
 			return request(String.format(REQ_GET_CHECKIN_LIST, guardName));
 	}
 	
-	public static String getNames() throws HttpHostConnectException, ConnectTimeoutException, SocketTimeoutException {
+	public static String getNames() throws IOException {
 		return request(REQ_GET_NAMES);
 	}
 	
-	public static String request(String str) throws org.apache.http.conn.ConnectTimeoutException, java.net.SocketTimeoutException, org.apache.http.conn.HttpHostConnectException {
+	public static String request(String str) throws IOException {
 		Log.d("sql", str);
 		str = str.replace("'", "xxaxx");
 		try {
@@ -145,8 +145,6 @@ public class Request {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		

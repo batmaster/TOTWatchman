@@ -1,5 +1,6 @@
 package com.tot.totwatchman;
 
+import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +92,7 @@ public class ScanFragment extends Fragment {
 					task.execute();
 				} else {
 					editTextName.setHint("ชื่อ");
+					buttonScanner.setVisibility(View.GONE);
 					buttonCheckin.setVisibility(View.GONE);
 				}
 			}
@@ -249,11 +251,13 @@ public class ScanFragment extends Fragment {
 			try {
 				name = Parser.parse(Request.getName(id));
 			} catch (ConnectTimeoutException e) {
-				name = "";
+				name = "มีปัญหาการเชื่อมต่อ";
 			} catch (SocketTimeoutException e) {
-				name = "";
+				name = "มีปัญหาการเชื่อมต่อ";
 			} catch (HttpHostConnectException e) {
-				name = "";
+				name = "มีปัญหาการเชื่อมต่อ";
+			} catch (IOException e) {
+				name = "มีปัญหาการเชื่อมต่อ";
 			}
 			return "some message";
 		}
@@ -268,7 +272,6 @@ public class ScanFragment extends Fragment {
 					name = jo.getString("name");
 				}
 			} catch (JSONException e) {
-				name = "";
 				e.printStackTrace();
 			}
 			
@@ -276,11 +279,17 @@ public class ScanFragment extends Fragment {
 				if (name.equals("[]"))
 					name = "ไม่พบชื่อ";
 				editTextName.setHint(name);
-
-				if (!editTextLocation.getHint().equals("สถานที่") && !editTextLocation.getHint().equals("ไม่พบสถานที่") && !editTextName.getHint().equals("ชื่อ") && !editTextName.getHint().equals("ไม่พบชื่อ"))
-					buttonCheckin.setVisibility(View.VISIBLE);
-				else
-					buttonCheckin.setVisibility(View.GONE);
+				
+				if (!editTextName.getHint().equals("ชื่อ") && !editTextName.getHint().equals("ไม่พบชื่อ") && !editTextName.getHint().equals("มีปัญหาการเชื่อมต่อ")) {
+					buttonScanner.setVisibility(View.VISIBLE);
+					
+					if (!editTextLocation.getHint().equals("สถานที่") && !editTextLocation.getHint().equals("ไม่พบสถานที่"))
+						buttonCheckin.setVisibility(View.VISIBLE);
+					else
+						buttonCheckin.setVisibility(View.GONE);
+				} else {
+					buttonScanner.setVisibility(View.GONE);
+				}
 			}
 			else {
 				
@@ -317,13 +326,16 @@ public class ScanFragment extends Fragment {
 				location = Parser.parse(Request.getLocation(code));
 			} catch (ConnectTimeoutException e) {
 				loading.setMessage("เชื่อมต่อเซิร์ฟนานเกินไป");
-				location = "";
+				location = "มีปัญหาการเชื่อมต่อ";
 			} catch (SocketTimeoutException e) {
 				loading.setMessage("รอผลตอบกลับนานเกินไป");
-				location = "";
+				location = "มีปัญหาการเชื่อมต่อ";
 			} catch (HttpHostConnectException e) {
 				loading.setMessage("เชื่อมต่อเซิร์ฟเวอร์ไม่ได้");
-				location = "";
+				location = "มีปัญหาการเชื่อมต่อ";
+			} catch (IOException e) {
+				loading.setMessage("มีปัญหาการเชื่อมต่อ");
+				location = "มีปัญหาการเชื่อมต่อ";
 			}
 			return "some message";
 		}
@@ -345,7 +357,6 @@ public class ScanFragment extends Fragment {
 					location = jo.getString("name_lo");
 				}
 			} catch (JSONException e) {
-				location = "";
 				e.printStackTrace();
 			}
 			
@@ -354,7 +365,7 @@ public class ScanFragment extends Fragment {
 					location = "ไม่พบสถานที่";
 				editTextLocation.setHint(location);
 				
-				if (!editTextLocation.getHint().equals("สถานที่") && !editTextLocation.getHint().equals("ไม่พบสถานที่") && !editTextName.getHint().equals("ชื่อ") && !editTextName.getHint().equals("ไม่พบชื่อ"))
+				if (!editTextLocation.getHint().equals("สถานที่") && !editTextLocation.getHint().equals("ไม่พบสถานที่") && !editTextLocation.getHint().equals("มีปัญหาการเชื่อมต่อ") && !editTextName.getHint().equals("ชื่อ") && !editTextName.getHint().equals("ไม่พบชื่อ"))
 					buttonCheckin.setVisibility(View.VISIBLE);
 				else
 					buttonCheckin.setVisibility(View.GONE);
@@ -400,7 +411,11 @@ public class ScanFragment extends Fragment {
 			} catch (HttpHostConnectException e) {
 				loading.setMessage("เชื่อมต่อเซิร์ฟเวอร์ไม่ได้");
 				error = true;
+			} catch (IOException e) {
+				loading.setMessage("มีปัญหาการเชื่อมต่อ");
+				error = true;
 			}
+				
 		    return "some text";
 		}
 		
@@ -452,6 +467,8 @@ public class ScanFragment extends Fragment {
 							} catch (ConnectTimeoutException e) {
 								e.printStackTrace();
 							} catch (SocketTimeoutException e) {
+								e.printStackTrace();
+							} catch (IOException e) {
 								e.printStackTrace();
 							}
 							

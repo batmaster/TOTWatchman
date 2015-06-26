@@ -1,5 +1,6 @@
 package com.tot.totwatchman;
 
+import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -297,6 +298,9 @@ public class HistoryFragment extends Fragment {
 			} catch (HttpHostConnectException e) {
 				loading.setMessage("เชื่อมต่อเซิร์ฟเวอร์ไม่ได้");
 				e.printStackTrace();
+			} catch (IOException e) {
+				loading.setMessage("มีปัญหาการเชื่อมต่อ");
+				e.printStackTrace();
 			}
 			
 			if (list.size() == 0)
@@ -359,6 +363,9 @@ public class HistoryFragment extends Fragment {
 				loading.setMessage("รอผลตอบกลับนานเกินไป");
 			} catch (HttpHostConnectException e) {
 				loading.setMessage("เชื่อมต่อเซิร์ฟเวอร์ไม่ได้");
+				e.printStackTrace();
+			} catch (IOException e) {
+				loading.setMessage("มีปัญหาการเชื่อมต่อ");
 				e.printStackTrace();
 			}
 			return "some message";
